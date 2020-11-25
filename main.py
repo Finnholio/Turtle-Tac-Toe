@@ -79,21 +79,29 @@ def changeBoard(boardState, currentPlayer, placeChanged):
 def checkForWinner(boardState):
     for i in range(len(boardState)):
         #check verticle
-        if boardState[i][0] == boardState[i][1] and boardState[i][1] == boardState[i][2]:
+        if boardState[i][0] == boardState[i][1] and boardState[i][1] == boardState[i][2] and boardState[i][0] != 0:
             return boardState[i][0]
 
         #check horizontal
-        if boardState[0][i] == boardState[1][i] and boardState[1][i] == boardState[2][i]:
-            return boardState[i][0]
+        if boardState[0][i] == boardState[1][i] and boardState[1][i] == boardState[2][i] and boardState[0][i] != 0:
+            return boardState[0][i]
 
     #check diagonal
-    if boardState[0][0] == boardState[1][1] and boardState[1][1] == boardState[2][2]:
-        return boardState[i][0]
+    if boardState[0][0] == boardState[1][1] and boardState[1][1] == boardState[2][2] and boardState[0][0] != 0:
+        return boardState[0][0]
 
-    if boardState[2][0] == boardState[1][1] and boardState[1][1] == boardState[0][2]:
-        return boardState[i][0]
+    if boardState[2][0] == boardState[1][1] and boardState[1][1] == boardState[0][2] and boardState[2][0] != 0:
+        return boardState[2][0]
 
-    return 0
+    # check for cat
+    for i in range(len(boardState)):
+        for j in range(len(boardState[i])):
+            if boardState[i][j] == 0:
+                #return no victor if no spaces empty
+                return 0
+    #return cat if not
+    return -2
+
 
 def drawX(x, y):
     deadSpace = BOARDSIZE/3 * 1/5
@@ -145,7 +153,7 @@ while playing:
 
 
 if hasPlayerWon != -2:
-    print("player " + str(hasPlayerWon) + " has won!")
+    print("player " + str(hasPlayerWon*-1) + " has won!")
 else:
     print("its a tie!")
 
