@@ -42,14 +42,20 @@ def getInput(currentPlayer):
 
     #check for button being pressed
     events = p.event.get()
+
     for event in events:
-        print("mouse pressed")
-        if event.type == p.MOUSEBUTTONUP:
+        if event.type == p.MOUSEBUTTONDOWN:
+            print(p.event.event_name(event.type))
             mousePosition = p.mouse.get_pos()
 
             #get inputed space if mouse button pressed
             inputedSpace[0] = int(math.floor(mousePosition[0] / (BOARDSIZE/3)))
             inputedSpace[1] = int(math.floor(mousePosition[1] / (BOARDSIZE/3)))
+            print(inputedSpace)
+
+        #check to see if user quit game
+        if event.type == p.QUIT:
+            return [-2, -2]
 
     return inputedSpace
 
@@ -118,13 +124,14 @@ while playing:
     if hasPlayerWon != 0:
         playing = False
 
-    #check to see if user quit game
-    event = p.event.poll()
-    if event.type == p.QUIT:
-        break
-
-    #get input and change board
+    #get input
     playerInput = getInput(playerPlaying)
+
+    #check to see if player wanted to quit game
+    if playerInput[0] == -2:
+        playing = False
+
+    #change board
     boardState = changeBoard(boardState, playerPlaying, playerInput)
 
     #change player
